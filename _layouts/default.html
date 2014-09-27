@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="{{ site.author.name }}">
+    <meta name="keywords" content="{% if page.tags %}{{ page.tags | join: ',' }}{% else %}{{ site.keywords | join: ',' }}{% endif %}">
+    <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+    <link href="{{ site.favicon }}" rel="shortcut icon" type="image/x-icon">
+    <title>{% if page.title %}{{ page.title }} - {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
+    <link href="/stylesheets/bootstrap.min.css" rel="stylesheet">
+    <link href="/stylesheets/custom.css" rel="stylesheet">
+    <link href="/stylesheets/font-awesome.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="navbar-wrapper">
+      <div class="container">
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/">{{ site.title }}</a>
+            </div>
+            <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                {% for link in site.nav %}{% assign active = nil %}{% if page.url == link.url %}{% assign active = 'active' %}{% endif %}
+                {% if link.url == '/categories.html' %}
+                <li class="{{ active }} dropdown hidden-xs">
+                  <a href="" class="dropdown-toggle" data-toggle="dropdown">{{ link.text }} <span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li class="{{ active }}"><a href="{{ link.url }}">全部分类</a></li>
+                    <li class="divider"></li>
+                    {% assign categories_list = site.categories %}
+                    {% for category in categories_list %}
+                    <li><a href="{{ link.url }}#{{ category[0] }}-ref"><i class="fa fa-folder-open"></i> {{ category[0] | join: "/" }}</a></li>
+                    {% endfor %}
+                  </ul>
+                </li>
+                <li class="{{ active }} visible-xs-block"><a href="{{ link.url }}">{{ link.text }}</a></li>
+                {% else %}
+                <li class="{{ active }}"><a href="{{ link.url }}">{{ link.text }}</a></li>
+                {% endif %}
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+    {% if page.boxlst %}{% assign main-content-translucent = nil %}{% else %}{% assign main-content-translucent = 'translucent' %}{% endif %}
+    <div class="container col-xs-12 col-sm-10 col-md-8 col-sm-push-1 col-md-push-2 {{ main-content-translucent }}" id="main-content">
+      <div class="returnTop"><span class="a"></span><span class="b"></span></div>
+      {{ content }}
+      <hr class="featurette-divider">
+      <footer>
+        <div class="text-center">
+            {% for link in site.follow %}
+            <span class="fa-stack fa-lg"><a href="{{ link.url }}" target="view_window"><i class="fa fa-square fa-stack-2x"></i><i class="{{ link.class }} fa-stack-1x fa-inverse"></i></a></span>
+            {% endfor %}
+        </div>
+      </footer>
+    </div>
+    <script src="/javascripts/jquery.min.js"></script>
+    <script src="/javascripts/bootstrap.min.js"></script>
+    <script>$(function(){$(window).scroll(function(e){if($(window).scrollTop()>20)$("div.returnTop").fadeIn(1000);else $("div.returnTop").fadeOut(1000)});$("div.returnTop").click(function(){$("body, html").animate({scrollTop:0},500)})});</script>
+</body>
+</html>
